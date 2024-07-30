@@ -53,7 +53,7 @@ function UVIndex({ chartData }) {
 
   return (
     <div className="h-64">
-      <h2 className="text-base my-3">UV Index</h2>
+      <h2 className="text-base mb-3">UV Index</h2>
       <Bar data={chartData} options={options} />
     </div>
   );

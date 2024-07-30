@@ -60,7 +60,7 @@ function TemperatureChart({ chartData }) {
 
   return (
     <div className="h-64">
-      <h2 className="text-base my-3">Temperature, &#8451;</h2>
+      <h2 className="text-base mb-3">Temperature, &#8451;</h2>
       <Line data={chartData} options={options} />
     </div>
   );

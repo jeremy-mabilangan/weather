@@ -5,3 +5,18 @@
 * {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer components {
+  .card-container {
+    --gap: 15px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin: calc(-1 * var(--gap)) 0 0 calc(-1 * var(--gap));
+    width: calc(100% + var(--gap));
+    justify-content: space-around;
+  }
+
+  .card-container > * {
+    margin: var(--gap) 0 0 var(--gap);
+  }
+}

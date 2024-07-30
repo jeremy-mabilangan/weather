@@ -6,6 +6,11 @@ module.exports = {
       colors: {
         'white-100': '#f2f2f2',
       },
+
+      screens: {
+        xs: '580px',
+        // => @media (min-width: 580px) { ... }
+      },
     },
   },
   plugins: [],
