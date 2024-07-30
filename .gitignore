@@ -8,3 +8,8 @@
 
 # misc
 .env
+
+.prettierrc
+.prettierignore
+
+.vscode
