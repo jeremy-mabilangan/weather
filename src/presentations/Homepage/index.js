@@ -87,7 +87,7 @@ function App() {
                 className="grid grid-cols-5 gap-4 mt-6 px-3"
               >
                 <img
-                  className="size-12 object-contain ml-3 content-center"
+                  className="size-12 object-contain lg:ml-3 content-center"
                   src="//cdn.weatherapi.com/weather/64x64/night/116.png"
                   alt="weather icon"
                 />

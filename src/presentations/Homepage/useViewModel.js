@@ -9,7 +9,7 @@ const ViewModel = () => {
     const forecastData = manilaJSON.forecast;
 
     const currentWeather = {
-      day: moment(locationData.localtime).format("dddd, h:mm A"),
+      day: moment(locationData.localtime).format("dddd h:mm A"),
       condition: {
         label: currentData.condition.text,
         icon: currentData.condition.icon,

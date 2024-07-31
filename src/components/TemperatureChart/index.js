@@ -1,7 +1,7 @@
-import { Line } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
-import { CategoryScale } from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Line } from "react-chartjs-2";
+import Chart from "chart.js/auto";
+import { CategoryScale } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 Chart.register(CategoryScale);
 Chart.register(ChartDataLabels);
@@ -15,12 +15,12 @@ function TemperatureChart({ chartData }) {
         formatter: function (value) {
           return value.y;
         },
-        color: 'black',
+        color: "black",
         font: {
-          size: 16,
+          size: 12,
         },
         padding: 6,
-        align: 'end',
+        align: "end",
       },
       title: {
         display: false,
