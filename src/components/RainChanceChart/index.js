@@ -22,12 +22,12 @@ function RainChanceChart({ chartData }) {
     maintainAspectRatio: false,
     plugins: {
       datalabels: {
-        formatter: function (value, context) {
-          const hNumber = Math.max(...context.dataset.data);
-          const hNumberIndex = context.dataset.data.findIndex((n) => n === hNumber);
+        // formatter: function (value, context) {
+        //   const hNumber = Math.max(...context.dataset.data);
+        //   const hNumberIndex = context.dataset.data.findIndex((n) => n === hNumber);
 
-          return hNumberIndex === context.dataIndex || context.dataIndex % 2 ? value : '';
-        },
+        //   return hNumberIndex === context.dataIndex || context.dataIndex % 2 ? value : '';
+        // },
         color: 'black',
         font: {
           size: 13,
@@ -35,6 +35,8 @@ function RainChanceChart({ chartData }) {
         'rain-drop': {
           type: 'bar',
         },
+        anchor: 'end',
+        align: 'top',
       },
       title: {
         display: false,
@@ -66,6 +68,7 @@ function RainChanceChart({ chartData }) {
         ticks: {
           display: false,
         },
+        grace: 5,
       },
     },
   };
@@ -113,7 +116,7 @@ function RainChanceChart({ chartData }) {
 
               // Positioning of raindrop svg in chart
               const pointX = rc1 ? point.x - 5 : rc2 ? point.x - 8 : point.x - 10;
-              const pointY = point.y + 7 + point.height / 2;
+              const pointY = point.y - 8;
               ctx.drawImage(img, pointX, pointY);
               ctx.restore();
             }
@@ -125,7 +128,7 @@ function RainChanceChart({ chartData }) {
 
   return (
     <div className="h-60">
-      <h2 className="text-base my-3">Rain Chance, %</h2>
+      <h2 className="text-2xl font-bold mb-3">Rain Chance %</h2>
       <Bar data={chartData} options={options} plugins={plugins} />
     </div>
   );

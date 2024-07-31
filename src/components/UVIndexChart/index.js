@@ -47,13 +47,14 @@ function UVIndex({ chartData }) {
         ticks: {
           display: false,
         },
+        grace: 2,
       },
     },
   };
 
   return (
     <div className="h-64">
-      <h2 className="text-base mb-3">UV Index</h2>
+      <h2 className="text-2xl font-bold mb-3">UV Index</h2>
       <Bar data={chartData} options={options} />
     </div>
   );

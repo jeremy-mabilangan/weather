@@ -8,7 +8,6 @@ Chart.register(ChartDataLabels);
 
 function TemperatureChart({ chartData }) {
   const options = {
-    resizeDelay: 2,
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -60,7 +59,9 @@ function TemperatureChart({ chartData }) {
 
   return (
     <div className="h-64">
-      <h2 className="text-base mb-3">Temperature, &#8451;</h2>
+      <h2 className="flex text-2xl font-bold mb-3">
+        Temperature <p className="font-sans pl-1">&#8451;</p>
+      </h2>
       <Line data={chartData} options={options} />
     </div>
   );
