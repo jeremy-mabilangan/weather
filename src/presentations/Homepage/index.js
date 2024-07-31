@@ -12,8 +12,15 @@ import { ReactComponent as HumiditySVG } from "../../../src/common/assets/humidi
 import { ReactComponent as SearchSVG } from "../../../src/common/assets/search.svg";
 
 function App() {
-  const { temperatureChartData, uvIndexChartData, rainChanceChartData } =
-    ViewModel();
+  const {
+    data: {
+      currentWeather,
+      forecast,
+      rainChart,
+      temperatureChart,
+      uvIndexChart,
+    },
+  } = ViewModel();
 
   return (
     <div className="min-h-screen bg-[#f2f2f2]">
@@ -34,22 +41,26 @@ function App() {
           <section className="shadow-xl rounded-xl p-5 bg-white">
             <section className="text-base xl:text-lg">
               <p className="font-bold text-2xl">Current Weather</p>
-              <p className="text-sm">Tuesday, 11:47</p>
+              <p className="text-sm">{currentWeather.day}</p>
               <div className="grid grid-cols-2 mt-5 gap-5">
                 <div className="content-center">
                   <div className="flex justify-end">
                     <img
                       className="size-16"
-                      src="//cdn.weatherapi.com/weather/64x64/night/353.png"
-                      alt="weather icon"
+                      src={currentWeather.condition.icon}
+                      alt="Weather Icon"
                     />
                   </div>
 
-                  <p className="text-sm text-right">Light rain shower</p>
+                  <p className="text-sm text-right">
+                    {currentWeather.condition.label}
+                  </p>
                 </div>
                 <div className="pt-2">
                   <div className="flex justify-start">
-                    <p className="text-8xl font-light">26</p>
+                    <p className="text-7xl font-light">
+                      {currentWeather.degree}
+                    </p>
                     <p className="font-sans pt-1 font-bold">&#8451;</p>
                   </div>
                 </div>
@@ -62,72 +73,48 @@ function App() {
               <HumiditySVG />
             </section>
             <section className="flex justify-between mt-2">
-              <p className="text-center w-9">80%</p>
-              <p className="text-center w-9">6</p>
-              <p className="text-center w-9">20kph</p>
-              <p className="text-center w-9">83</p>
+              <p className="text-center w-9">{currentWeather.rain_chance}%</p>
+              <p className="text-center w-9">{currentWeather.uv}</p>
+              <p className="text-center w-9">{currentWeather.wind}kph</p>
+              <p className="text-center w-9">{currentWeather.humidity}</p>
             </section>
           </section>
           <section className="shadow-xl rounded-xl p-5 bg-white">
             <p className="font-bold text-2xl">Forecast</p>
-            <div className="grid grid-cols-5 gap-4 mt-4 px-3">
-              <img
-                className="size-12 object-contain ml-3 content-center"
-                src="//cdn.weatherapi.com/weather/64x64/night/116.png"
-                alt="weather icon"
-              />
-              <p className="text-xl content-center">24&deg;/22&deg;</p>
-              <div className="col-span-3 content-center">
-                <p className="text-xl text-right ">
-                  <span className="font-bold">31</span>{" "}
-                  <span className="text-sm">Jul, Wed</span>
+            {forecast.map((f) => (
+              <div
+                key={Math.random()}
+                className="grid grid-cols-5 gap-4 mt-6 px-3"
+              >
+                <img
+                  className="size-12 object-contain ml-3 content-center"
+                  src="//cdn.weatherapi.com/weather/64x64/night/116.png"
+                  alt="weather icon"
+                />
+                <p className="text-xl content-center">
+                  {f.max_temp}&deg;/{f.min_temp}&deg;
                 </p>
+                <div className="col-span-3 content-center">
+                  <p className="text-xl text-right ">
+                    <span className="font-bold">{f.day}</span>{" "}
+                    <span className="text-sm">{f.md}</span>
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="grid grid-cols-5 gap-4 mt-4 px-3">
-              <img
-                className="size-12 object-contain ml-3"
-                src="//cdn.weatherapi.com/weather/64x64/night/116.png"
-                alt="weather icon"
-              />
-              <p className="text-xl content-center">24&deg;/22&deg;</p>
-              <div className="col-span-3 content-center">
-                <p className="text-xl text-right ">
-                  <span className="font-bold">1</span>{" "}
-                  <span className="text-sm">Aug, Thur</span>
-                </p>
-              </div>
-            </div>
-            <div className="grid grid-cols-5 gap-4 mt-4 px-3">
-              <img
-                className="size-12 object-contain ml-3"
-                src="//cdn.weatherapi.com/weather/64x64/night/116.png"
-                alt="weather icon"
-              />
-              <p className="text-xl content-center">24&deg;/22&deg;</p>
-              <div className="col-span-3 content-center">
-                <p className="text-xl text-right ">
-                  <span className="font-bold">2</span>{" "}
-                  <span className="text-sm">Aug, Fri</span>
-                </p>
-              </div>
-            </div>
+            ))}
           </section>
         </section>
         <section className="shadow-xl rounded-xl pb-10 mt-5 bg-white">
           <div className="p-5">
-            <RainChanceChart chartData={rainChanceChartData} />
+            <RainChanceChart chartData={rainChart} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="p-[40px_20px_20px_20px]">
-              <TemperatureChart chartData={temperatureChartData} />
+              <TemperatureChart chartData={temperatureChart} />
             </div>
             <div className="p-[40px_20px_20px_20px]">
-              <UVIndexChart chartData={uvIndexChartData} />
+              <UVIndexChart chartData={uvIndexChart} />
             </div>
-            {/* <div className="p-5">
-            <SunChart chartData={sunChartData} />
-          </div> */}
           </div>
         </section>
       </section>
