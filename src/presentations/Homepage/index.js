@@ -1,14 +1,19 @@
-import React from 'react';
-import { RainChanceChart, TemperatureChart, UVIndexChart } from '../../components';
-import ViewModel from './useViewModel';
-import { ReactComponent as RainSVG } from '../../../src/common/assets/rain.svg';
-import { ReactComponent as SunSVG } from '../../../src/common/assets/sun.svg';
-import { ReactComponent as WindSVG } from '../../../src/common/assets/wind.svg';
-import { ReactComponent as HumiditySVG } from '../../../src/common/assets/humidity.svg';
-import { ReactComponent as SearchSVG } from '../../../src/common/assets/search.svg';
+import React from "react";
+import {
+  RainChanceChart,
+  TemperatureChart,
+  UVIndexChart,
+} from "../../components";
+import ViewModel from "./useViewModel";
+import { ReactComponent as RainSVG } from "../../../src/common/assets/rain.svg";
+import { ReactComponent as SunSVG } from "../../../src/common/assets/sun.svg";
+import { ReactComponent as WindSVG } from "../../../src/common/assets/wind.svg";
+import { ReactComponent as HumiditySVG } from "../../../src/common/assets/humidity.svg";
+import { ReactComponent as SearchSVG } from "../../../src/common/assets/search.svg";
 
 function App() {
-  const { temperatureChartData, uvIndexChartData, rainChanceChartData } = ViewModel();
+  const { temperatureChartData, uvIndexChartData, rainChanceChartData } =
+    ViewModel();
 
   return (
     <div className="min-h-screen bg-[#f2f2f2]">
@@ -24,9 +29,9 @@ function App() {
             <SearchSVG />
           </button>
         </section>
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-5 bg-white">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* grid grid-cols-2 xs:max-md:grid-cols-3 md:max-xl:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-3 gap-y-6 */}
-          <section className="shadow-xl rounded-xl p-5">
+          <section className="shadow-xl rounded-xl p-5 bg-white">
             <section className="text-base xl:text-lg">
               <p className="font-bold text-2xl">Current Weather</p>
               <p className="text-sm">Tuesday, 11:47</p>
@@ -63,7 +68,7 @@ function App() {
               <p className="text-center w-9">83</p>
             </section>
           </section>
-          <section className="shadow-xl rounded-xl p-5">
+          <section className="shadow-xl rounded-xl p-5 bg-white">
             <p className="font-bold text-2xl">Forecast</p>
             <div className="grid grid-cols-5 gap-4 mt-4 px-3">
               <img
@@ -74,7 +79,8 @@ function App() {
               <p className="text-xl content-center">24&deg;/22&deg;</p>
               <div className="col-span-3 content-center">
                 <p className="text-xl text-right ">
-                  <span className="font-bold">31</span> <span className="text-sm">Jul, Wed</span>
+                  <span className="font-bold">31</span>{" "}
+                  <span className="text-sm">Jul, Wed</span>
                 </p>
               </div>
             </div>
@@ -87,7 +93,8 @@ function App() {
               <p className="text-xl content-center">24&deg;/22&deg;</p>
               <div className="col-span-3 content-center">
                 <p className="text-xl text-right ">
-                  <span className="font-bold">1</span> <span className="text-sm">Aug, Thur</span>
+                  <span className="font-bold">1</span>{" "}
+                  <span className="text-sm">Aug, Thur</span>
                 </p>
               </div>
             </div>
@@ -100,7 +107,8 @@ function App() {
               <p className="text-xl content-center">24&deg;/22&deg;</p>
               <div className="col-span-3 content-center">
                 <p className="text-xl text-right ">
-                  <span className="font-bold">2</span> <span className="text-sm">Aug, Fri</span>
+                  <span className="font-bold">2</span>{" "}
+                  <span className="text-sm">Aug, Fri</span>
                 </p>
               </div>
             </div>
@@ -110,11 +118,11 @@ function App() {
           <div className="p-5">
             <RainChanceChart chartData={rainChanceChartData} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 pt-5">
-            <div className="p-5">
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            <div className="p-[40px_20px_20px_20px]">
               <TemperatureChart chartData={temperatureChartData} />
             </div>
-            <div className="p-5">
+            <div className="p-[40px_20px_20px_20px]">
               <UVIndexChart chartData={uvIndexChartData} />
             </div>
             {/* <div className="p-5">
