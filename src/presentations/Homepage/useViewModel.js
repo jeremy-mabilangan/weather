@@ -1,151 +1,150 @@
+import manilaJSON from "../../common/dummy/manila.json";
+import moment from "moment/moment";
+import { createGradient, getUVColor } from "../../common/helpers";
+
 const ViewModel = () => {
-  function getGradient(ctx, chartArea) {
-    let width, height, gradient;
-    const chartWidth = chartArea.right - chartArea.left;
-    const chartHeight = chartArea.bottom - chartArea.top;
-    if (!gradient || width !== chartWidth || height !== chartHeight) {
-      // Create the gradient because this is either the first render
-      // or the size of the chart has changed
-      width = chartWidth;
-      height = chartHeight;
-      gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-      gradient.addColorStop(0, '#4fb300');
-      gradient.addColorStop(0.5, '#ffd401');
-      gradient.addColorStop(1, '#f56a01');
-    }
+  const reformatForecastData = () => {
+    const locationData = manilaJSON.location;
+    const currentData = manilaJSON.current;
+    const forecastData = manilaJSON.forecast;
 
-    return gradient;
-  }
+    const currentWeather = {
+      day: moment(locationData.localtime).format("dddd, h:mm A"),
+      condition: {
+        label: currentData.condition.text,
+        icon: currentData.condition.icon,
+      },
+      degree: currentData.dewpoint_c,
+      rain_chance: forecastData.forecastday[0].day.daily_chance_of_rain,
+      uv: currentData.uv,
+      wind: currentData.wind_kph,
+      humidity: currentData.humidity,
+    };
 
-  const temperatureChartData = {
-    labels: [
-      '10:00',
-      '12:00',
-      '14:00',
-      '16:00',
-      '18:00',
-      '20:00',
-      '22:00',
-      '24:00',
-      '2:00',
-      '4:00',
-      '6:00',
-      '8:00',
-    ],
-    datasets: [
-      {
-        label: 'Temperature',
-        data: [
-          {
-            x: '10:00',
-            y: 26,
-          },
-          {
-            x: '14:00',
-            y: 29,
-          },
-          {
-            x: '4:00',
-            y: 15,
-          },
-          {
-            x: '8:00',
-            y: 21,
-          },
-        ],
-        borderWidth: 2,
-        pointRadius: 3,
-        pointHoverRadius: 3,
-        tension: 0.3,
-        borderColor: function (context) {
-          const chart = context.chart;
-          const { ctx, chartArea } = chart;
+    const forecast = forecastData.forecastday.reduce((acc, item) => {
+      acc.push({
+        icon: item.day.condition.icon,
+        min_temp: item.day.mintemp_c,
+        max_temp: item.day.maxtemp_c,
+        day: moment(item.date).format("D"),
+        md: moment(item.date).format("MMM, dddd"),
+      });
 
-          if (!chartArea) {
-            return;
-          }
-          return getGradient(ctx, chartArea);
+      return acc;
+    }, []);
+
+    const hourLabels = forecastData.forecastday[0].hour.reduce((acc, item) => {
+      const isEven = moment(item.time).format("h")
+        ? Number(moment(item.time).format("h")) % 2
+          ? false
+          : true
+        : false;
+      if (isEven) {
+        acc.push(moment(item.time).format("h A"));
+        return acc;
+      } else {
+        return acc;
+      }
+    }, []);
+
+    const rainChart = {
+      labels: hourLabels,
+      datasets: [
+        {
+          data: forecastData.forecastday[0].hour.reduce((acc, item) => {
+            const isEven = moment(item.time).format("h")
+              ? Number(moment(item.time).format("h")) % 2
+                ? false
+                : true
+              : false;
+            if (isEven) {
+              acc.push(Number(item.chance_of_rain));
+              return acc;
+            } else {
+              return acc;
+            }
+          }, []),
+          backgroundColor: "transparent",
         },
-      },
-    ],
-  };
+      ],
+    };
 
-  const uvIndexChartData = {
-    labels: [
-      '8:00',
-      '9:00',
-      '10:00',
-      '11:00',
-      '12:00',
-      '13:00',
-      '14:00',
-      '15:00',
-      '16:00',
-      '17:00',
-      '18:00',
-      '19:00',
-    ],
-    datasets: [
-      {
-        data: [1, 2, 3, 3, 4, 5, 5, 4, 4, 3, 2, 1],
-        backgroundColor: [
-          '#4fb300',
-          '#d6e489',
-          '#ffd401',
-          '#ffd401',
-          '#f6a300',
-          '#f56a01',
-          '#f56a01',
-          '#f6a300',
-          '#f6a300',
-          '#ffd401',
-          '#d6e489',
-          '#4fb300',
-        ],
-      },
-    ],
-  };
+    const temperatureChart = {
+      labels: hourLabels,
+      datasets: [
+        {
+          data: forecastData.forecastday[0].hour.reduce((acc, item) => {
+            const isEven = moment(item.time).format("h")
+              ? Number(moment(item.time).format("h")) % 2
+                ? false
+                : true
+              : false;
+            if (isEven) {
+              acc.push({
+                x: moment(item.time).format("h A"),
+                y: item.temp_c,
+              });
+              return acc;
+            } else {
+              return acc;
+            }
+          }, []),
+          borderWidth: 2,
+          pointRadius: 3,
+          pointHoverRadius: 3,
+          tension: 0.3,
+          borderColor: function (context) {
+            const chart = context.chart;
+            const { ctx, chartArea } = chart;
 
-  const rainChanceChartData = {
-    labels: [
-      '10:00',
-      '12:00',
-      '14:00',
-      '16:00',
-      '18:00',
-      '20:00',
-      '22:00',
-      '24:00',
-      '2:00',
-      '4:00',
-      '6:00',
-      '8:00',
-    ],
-    datasets: [
-      {
-        data: [36, 20, 1, 15, 20, 67, 70, 78, 100, 73, 22, 10],
-        backgroundColor: 'transparent',
-      },
-    ],
-  };
+            if (!chartArea) {
+              return;
+            }
+            return createGradient(ctx, chartArea, {
+              first: "#4fb300",
+              second: "#ffd401",
+              third: "#f56a01",
+            });
+          },
+        },
+      ],
+    };
 
-  const sunChartData = {
-    datasets: [
-      {
-        data: [30, 10],
-        backgroundColor: ['#f6a500', '#ffdd99'],
-        cutout: '98%',
-        circumference: 120,
-        rotation: 300,
-      },
-    ],
+    const uvList = forecastData.forecastday[0].hour.reduce((acc, item) => {
+      const isEven = moment(item.time).format("h")
+        ? Number(moment(item.time).format("h")) % 2
+          ? false
+          : true
+        : false;
+      if (isEven) {
+        acc.push(item.uv);
+        return acc;
+      } else {
+        return acc;
+      }
+    }, []);
+
+    const uvIndexChart = {
+      labels: hourLabels,
+      datasets: [
+        {
+          data: uvList,
+          backgroundColor: uvList.map((uv) => getUVColor(uv)),
+        },
+      ],
+    };
+
+    return {
+      currentWeather,
+      forecast,
+      rainChart,
+      temperatureChart,
+      uvIndexChart,
+    };
   };
 
   return {
-    temperatureChartData,
-    uvIndexChartData,
-    rainChanceChartData,
-    sunChartData,
+    data: reformatForecastData(),
   };
 };
 

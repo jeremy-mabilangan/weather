@@ -1,7 +1,7 @@
-import { Bar } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
-import { CategoryScale } from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Bar } from "react-chartjs-2";
+import Chart from "chart.js/auto";
+import { CategoryScale } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 Chart.register(CategoryScale);
 Chart.register(ChartDataLabels);
@@ -12,7 +12,7 @@ function UVIndex({ chartData }) {
     maintainAspectRatio: false,
     plugins: {
       datalabels: {
-        color: 'white',
+        color: "white",
         font: {
           size: 16,
         },
@@ -47,7 +47,7 @@ function UVIndex({ chartData }) {
         ticks: {
           display: false,
         },
-        grace: 2,
+        grace: 1,
       },
     },
   };
