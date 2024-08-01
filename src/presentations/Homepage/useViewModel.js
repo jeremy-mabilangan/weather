@@ -1,7 +1,7 @@
 import moment from "moment/moment";
 import { createGradient, getUVColor } from "../../common/helpers";
 import { useGetWeatherForecast } from "../../common/blhooks/useWeather";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setWeatherForecastData } from "../../common/reducers/weather";
 
@@ -9,14 +9,25 @@ const ViewModel = () => {
   const weatherState = useSelector((state) => state.weather);
   const dispatch = useDispatch();
   const locationInput = useRef();
+  const [showErrorMessage, setShowErrorMessage] = useState({
+    show: false,
+    message: "",
+  });
 
   /** ----------- Get weather forecast mutation ----------- */
   const { mutate: getWeatherForecastMutate } = useGetWeatherForecast({
     onSuccess: (data) => {
+      if (showErrorMessage.show) {
+        setShowErrorMessage({ show: false });
+      }
+
       dispatch(setWeatherForecastData(data.data));
     },
     onError: (error) => {
-      console.log(error.response.data.error);
+      setShowErrorMessage({
+        show: true,
+        message: error.response?.data.error.message || error.message,
+      });
     },
   });
 
@@ -41,7 +52,7 @@ const ViewModel = () => {
 
     const name = `${locationData.name}, ${locationData.region}, ${locationData.country}`;
     const currentWeather = {
-      day: moment(locationData.localtime).format("dddd h:mm A"),
+      day: moment(locationData.localtime).format("D MMM, dddd"),
       condition: {
         label: currentData.condition.text,
         icon: currentData.condition.icon,
@@ -180,6 +191,7 @@ const ViewModel = () => {
     data: weatherState?.data ? reformatForecastData() : undefined,
     locationInput,
     handleSubmit,
+    showErrorMessage,
   };
 };
 
