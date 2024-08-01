@@ -34,7 +34,8 @@ const ViewModel = () => {
   /**
    * Submit location to weather API
    */
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    locationInput.current.blur();
     const value = locationInput.current?.value;
 
     if (value) {
@@ -43,6 +44,8 @@ const ViewModel = () => {
         days: 3,
       });
     }
+
+    e.preventDefault();
   };
 
   const reformatForecastData = () => {

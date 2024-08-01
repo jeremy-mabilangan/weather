@@ -18,12 +18,7 @@ function App() {
       <section className="px-[15px] md:px-[30px] lg:px-[60px] xl:px-[20%] py-5">
         <section className="mb-3 grid md:grid-cols-2 gap-3">
           <div className="relative">
-            <form
-              onSubmit={(e) => {
-                handleSubmit();
-                e.preventDefault();
-              }}
-            >
+            <form onSubmit={handleSubmit}>
               <input
                 className="border-2 border-gray-300 bg-white h-12 px-5 pr-16 rounded-lg text-sm focus:outline-none w-full"
                 type="search"
@@ -34,7 +29,7 @@ function App() {
               ></input>
               {showErrorMessage.show && (
                 <div
-                  className="p-[16px_16px_0px_16px] text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                  className="p-[16px_16px_0px_16px] text-sm md:mb-1 text-red-800 rounded-lg dark:text-red-400"
                   role="alert"
                 >
                   <span className="font-medium">
