@@ -12,19 +12,37 @@ import { ReactComponent as HumiditySVG } from "../../../src/common/assets/humidi
 import { ReactComponent as SearchSVG } from "../../../src/common/assets/search.svg";
 
 function App() {
-  const { locationInput, handleSubmit, data } = ViewModel();
+  const { locationInput, handleSubmit, data, showErrorMessage } = ViewModel();
   return (
     <div className="min-h-screen bg-[#f2f2f2]">
       <section className="px-[15px] md:px-[30px] lg:px-[60px] xl:px-[20%] py-5">
         <section className="mb-3 grid md:grid-cols-2 gap-3">
           <div className="relative">
-            <input
-              className="border-2 border-gray-300 bg-white h-12 px-5 pr-16 rounded-lg text-sm focus:outline-none w-full"
-              type="search"
-              name="search"
-              placeholder="Search"
-              ref={locationInput}
-            ></input>
+            <form
+              onSubmit={(e) => {
+                handleSubmit();
+                e.preventDefault();
+              }}
+            >
+              <input
+                className="border-2 border-gray-300 bg-white h-12 px-5 pr-16 rounded-lg text-sm focus:outline-none w-full"
+                type="search"
+                name="search"
+                placeholder="Search"
+                autoComplete="off"
+                ref={locationInput}
+              ></input>
+              {showErrorMessage.show && (
+                <div
+                  className="p-[16px_16px_0px_16px] text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                  role="alert"
+                >
+                  <span className="font-medium">
+                    {showErrorMessage.message}
+                  </span>
+                </div>
+              )}
+            </form>
             <button
               type="submit"
               className="absolute right-0 top-0 mt-3 mr-4"
@@ -34,7 +52,7 @@ function App() {
             </button>
           </div>
           <div>
-            <p className="content-center h-full text-lg text-center md:text-right">
+            <p className="h-full text-lg text-center md:text-right">
               {data?.name || ""}
             </p>
           </div>
