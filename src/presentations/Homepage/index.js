@@ -13,6 +13,8 @@ import { ReactComponent as SearchSVG } from "../../../src/common/assets/search.s
 
 function App() {
   const {
+    locationInput,
+    handleSubmit,
     data: {
       currentWeather,
       forecast,
@@ -31,8 +33,13 @@ function App() {
             type="search"
             name="search"
             placeholder="Search"
+            ref={locationInput}
           ></input>
-          <button type="submit" className="absolute right-0 top-0 mt-3 mr-4">
+          <button
+            type="submit"
+            className="absolute right-0 top-0 mt-3 mr-4"
+            onClick={handleSubmit}
+          >
             <SearchSVG />
           </button>
         </section>

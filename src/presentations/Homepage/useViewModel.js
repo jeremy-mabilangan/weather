@@ -1,8 +1,36 @@
 import manilaJSON from "../../common/dummy/manila.json";
 import moment from "moment/moment";
 import { createGradient, getUVColor } from "../../common/helpers";
+import { useGetWeatherForecast } from "../../common/blhooks/useWeather";
+import { useRef } from "react";
 
 const ViewModel = () => {
+  const locationInput = useRef();
+
+  /** ----------- Get weather forecast mutation ----------- */
+  const { mutate: getWeatherForecastMutate } = useGetWeatherForecast({
+    onSuccess: (data) => {
+      console.log(data.data);
+    },
+    onError: (error) => {
+      console.log(error.response.data.error);
+    },
+  });
+
+  /**
+   * Submit location to weather API
+   */
+  const handleSubmit = () => {
+    const value = locationInput.current?.value;
+
+    if (value) {
+      getWeatherForecastMutate({
+        q: value,
+        days: 3,
+      });
+    }
+  };
+
   const reformatForecastData = () => {
     const locationData = manilaJSON.location;
     const currentData = manilaJSON.current;
@@ -145,6 +173,8 @@ const ViewModel = () => {
 
   return {
     data: reformatForecastData(),
+    locationInput,
+    handleSubmit,
   };
 };
 
