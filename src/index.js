@@ -4,6 +4,8 @@ import "./index.css";
 import App from "./presentations/Homepage";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "react-query";
+import store from "./common/app/store";
+import { Provider } from "react-redux";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,7 +25,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </QueryClientProvider>
   </>
 );

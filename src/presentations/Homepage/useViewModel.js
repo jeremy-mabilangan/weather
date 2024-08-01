@@ -1,16 +1,19 @@
-import manilaJSON from "../../common/dummy/manila.json";
 import moment from "moment/moment";
 import { createGradient, getUVColor } from "../../common/helpers";
 import { useGetWeatherForecast } from "../../common/blhooks/useWeather";
 import { useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setWeatherForecastData } from "../../common/reducers/weather";
 
 const ViewModel = () => {
+  const weatherState = useSelector((state) => state.weather);
+  const dispatch = useDispatch();
   const locationInput = useRef();
 
   /** ----------- Get weather forecast mutation ----------- */
   const { mutate: getWeatherForecastMutate } = useGetWeatherForecast({
     onSuccess: (data) => {
-      console.log(data.data);
+      dispatch(setWeatherForecastData(data.data));
     },
     onError: (error) => {
       console.log(error.response.data.error);
@@ -32,10 +35,11 @@ const ViewModel = () => {
   };
 
   const reformatForecastData = () => {
-    const locationData = manilaJSON.location;
-    const currentData = manilaJSON.current;
-    const forecastData = manilaJSON.forecast;
+    const locationData = weatherState?.data?.location;
+    const currentData = weatherState?.data?.current;
+    const forecastData = weatherState?.data?.forecast;
 
+    const name = `${locationData.name}, ${locationData.region}, ${locationData.country}`;
     const currentWeather = {
       day: moment(locationData.localtime).format("dddd h:mm A"),
       condition: {
@@ -163,6 +167,7 @@ const ViewModel = () => {
     };
 
     return {
+      name,
       currentWeather,
       forecast,
       rainChart,
@@ -172,7 +177,7 @@ const ViewModel = () => {
   };
 
   return {
-    data: reformatForecastData(),
+    data: weatherState?.data ? reformatForecastData() : undefined,
     locationInput,
     handleSubmit,
   };
