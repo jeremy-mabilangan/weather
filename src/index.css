@@ -10,5 +10,17 @@ body {
   background-color: #f2f2f2;
 }
 
+@layer base {
+  ul,
+  ol {
+    list-style: revert;
+  }
+}
+
 @layer components {
+}
+
+/** Hide Google Maps footer, copyright etc. */
+.gm-style-cc {
+  display: none;
 }

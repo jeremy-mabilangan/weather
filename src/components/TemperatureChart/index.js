@@ -52,7 +52,9 @@ function TemperatureChart({ chartData }) {
         ticks: {
           display: false,
         },
-        grace: 5,
+        beginAtZero: true,
+        grace: 2,
+        max: 60,
       },
     },
   };

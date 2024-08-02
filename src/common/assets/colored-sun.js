@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+const ColoredSun = `<?xml version="1.0" encoding="utf-8"?>
 
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg width="36px" height="36px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet">
+<svg width="25px" height="25px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet">
 
 <g fill="#ffe62e">
 
@@ -79,4 +79,6 @@
 
 </g>
 
-</svg>
+</svg>`;
+
+export default ColoredSun;
