@@ -14,6 +14,8 @@ const ViewModel = () => {
     message: "",
   });
 
+  const MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+
   /** ----------- Get weather forecast mutation ----------- */
   const { mutate: getWeatherForecastMutate } = useGetWeatherForecast({
     onSuccess: (data) => {
@@ -52,15 +54,19 @@ const ViewModel = () => {
     const locationData = weatherState?.data?.location;
     const currentData = weatherState?.data?.current;
     const forecastData = weatherState?.data?.forecast;
+    const location = {
+      lat: locationData.lat,
+      lng: locationData.lon,
+    };
 
-    const name = `${locationData.name}, ${locationData.region}, ${locationData.country}`;
+    const name = `${locationData.name}, ${locationData.name === locationData.region ? "" : locationData.region + ","} ${locationData.country}`;
     const currentWeather = {
-      day: moment(locationData.localtime).format("D MMM, dddd"),
+      day: moment(locationData.localtime).format("dddd, D MMM h:m A"),
       condition: {
         label: currentData.condition.text,
         icon: currentData.condition.icon,
       },
-      degree: currentData.dewpoint_c,
+      degree: currentData.temp_c,
       rain_chance: forecastData.forecastday[0].day.daily_chance_of_rain,
       uv: currentData.uv,
       wind: currentData.wind_kph,
@@ -69,6 +75,7 @@ const ViewModel = () => {
 
     const forecast = forecastData.forecastday.reduce((acc, item) => {
       acc.push({
+        label: item.day.condition.text,
         icon: item.day.condition.icon,
         min_temp: item.day.mintemp_c,
         max_temp: item.day.maxtemp_c,
@@ -139,7 +146,7 @@ const ViewModel = () => {
           pointRadius: 3,
           pointHoverRadius: 3,
           tension: 0.3,
-          borderColor: function (context) {
+          borderColor: (context) => {
             const chart = context.chart;
             const { ctx, chartArea } = chart;
 
@@ -152,6 +159,21 @@ const ViewModel = () => {
               third: "#f56a01",
             });
           },
+          backgroundColor: (context) => {
+            const chart = context.chart;
+            const { ctx, chartArea } = chart;
+
+            if (!chartArea) {
+              return;
+            }
+            return createGradient(ctx, chartArea, {
+              first: "rgba(79, 179, 0, 0.5)",
+              second: "rgba(255, 212, 1, 0.5)",
+              third: "rgb(245, 106, 1, 0.5)",
+            });
+          },
+          fill: true,
+          // pointBackgroundColor: "current",
         },
       ],
     };
@@ -187,6 +209,7 @@ const ViewModel = () => {
       rainChart,
       temperatureChart,
       uvIndexChart,
+      location,
     };
   };
 
@@ -195,6 +218,7 @@ const ViewModel = () => {
     locationInput,
     handleSubmit,
     showErrorMessage,
+    MAPS_API_KEY,
   };
 };
 

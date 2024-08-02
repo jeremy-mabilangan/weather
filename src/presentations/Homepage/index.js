@@ -10,9 +10,11 @@ import { ReactComponent as SunSVG } from "../../../src/common/assets/sun.svg";
 import { ReactComponent as WindSVG } from "../../../src/common/assets/wind.svg";
 import { ReactComponent as HumiditySVG } from "../../../src/common/assets/humidity.svg";
 import { ReactComponent as SearchSVG } from "../../../src/common/assets/search.svg";
+import { APIProvider, Map } from "@vis.gl/react-google-maps";
 
 function App() {
-  const { locationInput, handleSubmit, data, showErrorMessage } = ViewModel();
+  const { locationInput, handleSubmit, data, showErrorMessage, MAPS_API_KEY } =
+    ViewModel();
   return (
     <div className="min-h-screen bg-[#f2f2f2]">
       <section className="px-[15px] md:px-[30px] lg:px-[60px] xl:px-[20%] py-5">
@@ -20,10 +22,10 @@ function App() {
           <div className="relative">
             <form onSubmit={handleSubmit}>
               <input
-                className="border-2 border-gray-300 bg-white h-12 px-5 pr-16 rounded-lg text-sm focus:outline-none w-full"
+                className="border-2 border-gray-300 bg-white h-14 px-5 pr-16 rounded-lg text-sm focus:outline-none w-full"
                 type="search"
                 name="search"
-                placeholder="Search"
+                placeholder="Search your location"
                 autoComplete="off"
                 ref={locationInput}
               ></input>
@@ -40,7 +42,7 @@ function App() {
             </form>
             <button
               type="submit"
-              className="absolute right-0 top-0 mt-3 mr-4"
+              className="absolute right-0 top-0 mt-4 mr-4"
               onClick={handleSubmit}
             >
               <SearchSVG />
@@ -114,17 +116,26 @@ function App() {
                 {data?.forecast.map((f) => (
                   <div
                     key={Math.random()}
-                    className="grid grid-cols-5 gap-4 mt-6 px-3"
+                    className="grid grid-cols-5 gap-2 mt-6 px-3"
                   >
-                    <img
-                      className="size-12 object-contain lg:ml-3 content-center"
-                      src="//cdn.weatherapi.com/weather/64x64/night/116.png"
-                      alt="weather icon"
-                    />
-                    <p className="text-xl content-center">
-                      {f.max_temp}&deg;/{f.min_temp}&deg;
-                    </p>
                     <div className="col-span-3 content-center">
+                      <div className="flex">
+                        <img
+                          className="size-12 mr-3"
+                          src={f.icon}
+                          alt="weather icon"
+                        />
+                        <div>
+                          <p className="text-lg content-center font-bold">
+                            {f.label}
+                          </p>
+                          <p className="text-sm content-center">
+                            {f.max_temp}&deg;/{f.min_temp}&deg;
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-span-2 content-center">
                       <p className="text-xl text-right ">
                         <span className="font-bold">{f.day}</span>{" "}
                         <span className="text-sm">{f.md}</span>
@@ -138,9 +149,24 @@ function App() {
               className="shadow-xl rounded-xl pb-10 mt-5 bg-white animate-slideInFromBottom opacity-0"
               style={{ "--delay": "0.5s" }}
             >
-              <div className="p-5">
-                <RainChanceChart chartData={data?.rainChart} />
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                <div>
+                  {data.location && (
+                    <APIProvider apiKey={MAPS_API_KEY}>
+                      <Map
+                        defaultCenter={{ ...data.location }}
+                        defaultZoom={4}
+                        gestureHandling={"greedy"}
+                        disableDefaultUI={true}
+                      />
+                    </APIProvider>
+                  )}
+                </div>
+                <div className="p-5">
+                  <RainChanceChart chartData={data?.rainChart} />
+                </div>
               </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2">
                 <div className="p-[40px_20px_20px_20px]">
                   <TemperatureChart chartData={data?.temperatureChart} />
