@@ -100,24 +100,37 @@ const ViewModel = () => {
       }
     }, []);
 
+    // [50, 20, 5, 76, 78, 60, 100, 100, 88, 12, 50, 20];
+    const rcData = forecastData.forecastday[0].hour.reduce((acc, item) => {
+      const isEven = moment(item.time).format("h")
+        ? Number(moment(item.time).format("h")) % 2
+          ? false
+          : true
+        : false;
+      if (isEven) {
+        acc.push(Number(item.chance_of_rain));
+        return acc;
+      } else {
+        return acc;
+      }
+    }, []);
+
     const rainChart = {
       labels: hourLabels,
       datasets: [
         {
-          data: forecastData.forecastday[0].hour.reduce((acc, item) => {
-            const isEven = moment(item.time).format("h")
-              ? Number(moment(item.time).format("h")) % 2
-                ? false
-                : true
-              : false;
-            if (isEven) {
-              acc.push(Number(item.chance_of_rain));
-              return acc;
-            } else {
-              return acc;
-            }
+          data: rcData,
+          backgroundColor: rcData.reduce((acc, item) => {
+            const color =
+              item > 0 && item <= 50
+                ? "#9ae0fe"
+                : item >= 51 && item <= 75
+                  ? "#35c1fd"
+                  : "#028eca";
+            acc.push(color);
+            return acc;
           }, []),
-          backgroundColor: "transparent",
+          borderRadius: 15,
         },
       ],
     };
