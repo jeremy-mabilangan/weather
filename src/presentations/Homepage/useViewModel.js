@@ -1,14 +1,14 @@
 import moment from "moment/moment";
 import { createGradient, getUVColor } from "../../common/helpers";
 import { useGetWeatherForecast } from "../../common/blhooks/useWeather";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setWeatherForecastData } from "../../common/reducers/weather";
 
 const ViewModel = () => {
   const weatherState = useSelector((state) => state.weather);
   const dispatch = useDispatch();
-  const locationInput = useRef();
+  const locationInputRef = useRef();
   const [showErrorMessage, setShowErrorMessage] = useState({
     show: false,
     message: "",
@@ -17,30 +17,46 @@ const ViewModel = () => {
   const MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
   /** ----------- Get weather forecast mutation ----------- */
-  const { mutate: getWeatherForecastMutate } = useGetWeatherForecast({
-    onSuccess: (data) => {
-      if (showErrorMessage.show) {
-        setShowErrorMessage({ show: false });
-      }
+  const { mutate: getWeatherForecastMutate, isLoading } = useGetWeatherForecast(
+    {
+      onSuccess: (data) => {
+        if (showErrorMessage.show) {
+          setShowErrorMessage({ show: false });
+        }
 
-      dispatch(setWeatherForecastData(data.data));
-    },
-    onError: (error) => {
-      setShowErrorMessage({
-        show: true,
-        message: error.response?.data.error.message || error.message,
-      });
-    },
-  });
+        dispatch(
+          setWeatherForecastData({
+            ...data.data,
+            searchedLocation: locationInputRef.current?.value,
+          })
+        );
+      },
+      onError: (error) => {
+        setShowErrorMessage({
+          show: true,
+          message: error.response?.data.error.message || error.message,
+        });
+      },
+    }
+  );
 
   /**
    * Submit location to weather API
    */
   const handleSubmit = (e) => {
-    locationInput.current.blur();
-    const value = locationInput.current?.value;
+    locationInputRef.current.blur();
+    const value = locationInputRef.current?.value;
 
-    if (value) {
+    if (value === "") {
+      setShowErrorMessage({
+        show: true,
+        message: "Please enter your location",
+      });
+    } else if (
+      weatherState?.data?.searchedLocation !== value &&
+      value &&
+      !isLoading
+    ) {
       getWeatherForecastMutate({
         q: value,
         days: 3,
@@ -59,9 +75,9 @@ const ViewModel = () => {
       lng: locationData.lon,
     };
 
-    const name = `${locationData.name}, ${locationData.name === locationData.region ? "" : locationData.region + ","} ${locationData.country}`;
+    const name = `${locationData.name},${locationData.name === locationData.region ? "" : " " + locationData.region + ","} ${locationData.country}`;
     const currentWeather = {
-      day: moment(locationData.localtime).format("dddd, D MMM h:m A"),
+      day: moment(locationData.localtime).format("dddd, D MMM h:mm A"),
       condition: {
         label: currentData.condition.text,
         icon: currentData.condition.icon,
@@ -122,11 +138,15 @@ const ViewModel = () => {
           data: rcData,
           backgroundColor: rcData.reduce((acc, item) => {
             const color =
-              item > 0 && item <= 50
-                ? "#9ae0fe"
-                : item >= 51 && item <= 75
-                  ? "#35c1fd"
-                  : "#028eca";
+              item > 0 && item <= 20
+                ? "#68d0fd"
+                : item >= 21 && item <= 40
+                  ? "#36c1fc"
+                  : item >= 41 && item <= 60
+                    ? "#04b1fb"
+                    : item >= 61 && item <= 80
+                      ? "#038ec9"
+                      : "#026a97";
             acc.push(color);
             return acc;
           }, []),
@@ -226,12 +246,21 @@ const ViewModel = () => {
     };
   };
 
+  useEffect(() => {
+    if (weatherState?.data && locationInputRef.current) {
+      locationInputRef.current.value = weatherState?.data.searchedLocation;
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return {
     data: weatherState?.data ? reformatForecastData() : undefined,
-    locationInput,
+    locationInputRef,
     handleSubmit,
     showErrorMessage,
     MAPS_API_KEY,
+    isLoading,
   };
 };
 

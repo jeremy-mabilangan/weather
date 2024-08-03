@@ -4,8 +4,9 @@ import "./index.css";
 import App from "./presentations/Homepage";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "react-query";
-import store from "./common/app/store";
+import { store, persistor } from "./common/app/store";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,7 +27,9 @@ root.render(
   <>
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <App />
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
       </Provider>
     </QueryClientProvider>
   </>
