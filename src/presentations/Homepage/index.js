@@ -11,7 +11,7 @@ import { ReactComponent as SunSVG } from "../../../src/common/assets/sun.svg";
 import { ReactComponent as WindSVG } from "../../../src/common/assets/wind.svg";
 import { ReactComponent as HumiditySVG } from "../../../src/common/assets/humidity.svg";
 import { ReactComponent as SearchSVG } from "../../../src/common/assets/search.svg";
-import { ReactComponent as Loader } from "../../../src/common/assets/loader.svg";
+import { ReactComponent as LoaderSVG } from "../../../src/common/assets/loader.svg";
 import { ReactComponent as WeatherLogo } from "../../../src/common/assets/weather-logo.svg";
 
 function App() {
@@ -37,7 +37,7 @@ function App() {
             <div className="relative">
               <form onSubmit={handleSubmit}>
                 <input
-                  className="border-2 border-gray-300 bg-white h-14 px-5 pr-16 rounded-lg text-sm focus:outline-none w-full"
+                  className="border-2 border-gray-300 bg-white h-[60px] px-5 pr-16 rounded-lg text-sm focus:outline-none w-full"
                   type="search"
                   name="search"
                   placeholder="Search your location"
@@ -60,7 +60,7 @@ function App() {
                 className="absolute right-0 top-0 mt-4 mr-4"
                 onClick={handleSubmit}
               >
-                {isLoading ? <Loader /> : <SearchSVG />}
+                {isLoading ? <LoaderSVG /> : <SearchSVG />}
               </button>
               {!data && (
                 <div className="text-gray-700 mt-3 ml-3 text-sm">
