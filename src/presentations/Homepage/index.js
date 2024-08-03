@@ -11,11 +11,19 @@ import { ReactComponent as SunSVG } from "../../../src/common/assets/sun.svg";
 import { ReactComponent as WindSVG } from "../../../src/common/assets/wind.svg";
 import { ReactComponent as HumiditySVG } from "../../../src/common/assets/humidity.svg";
 import { ReactComponent as SearchSVG } from "../../../src/common/assets/search.svg";
+import { ReactComponent as Loader } from "../../../src/common/assets/loader.svg";
 import { ReactComponent as WeatherLogo } from "../../../src/common/assets/weather-logo.svg";
 
 function App() {
-  const { locationInput, handleSubmit, data, showErrorMessage, MAPS_API_KEY } =
-    ViewModel();
+  const {
+    locationInputRef,
+    handleSubmit,
+    data,
+    showErrorMessage,
+    MAPS_API_KEY,
+    isLoading,
+  } = ViewModel();
+
   return (
     <div className="min-h-screen bg-[#f2f2f2]">
       <section className="px-[15px] md:px-[30px] lg:px-[60px] xl:px-[20%] py-5">
@@ -34,7 +42,7 @@ function App() {
                   name="search"
                   placeholder="Search your location"
                   autoComplete="off"
-                  ref={locationInput}
+                  ref={locationInputRef}
                 ></input>
                 {showErrorMessage.show && (
                   <div
@@ -52,12 +60,11 @@ function App() {
                 className="absolute right-0 top-0 mt-4 mr-4"
                 onClick={handleSubmit}
               >
-                <SearchSVG />
+                {isLoading ? <Loader /> : <SearchSVG />}
               </button>
               {!data && (
                 <div className="text-gray-700 mt-3 ml-3 text-sm">
                   <h2>Example</h2>
-
                   <ul className="pl-5">
                     <li>Manila</li>
                     <li>New York</li>
@@ -168,7 +175,7 @@ function App() {
               style={{ "--delay": "0.5s" }}
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div className="h-[300px]">
+                <div className="h-[300px] select-none">
                   {data.location && (
                     <Maps
                       apiKey={MAPS_API_KEY}
@@ -185,16 +192,16 @@ function App() {
                     />
                   )}
                 </div>
-                <div className="pb-10 md:pb-0">
+                <div className="select-none pb-10 md:pb-0">
                   <RainChanceChart chartData={data?.rainChart} />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div className="py-5">
+                <div className="select-none py-5">
                   <TemperatureChart chartData={data?.temperatureChart} />
                 </div>
-                <div className="py-5">
+                <div className="select-none py-5">
                   <UVIndexChart chartData={data?.uvIndexChart} />
                 </div>
               </div>
