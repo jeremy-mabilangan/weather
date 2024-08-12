@@ -2,6 +2,7 @@
  * - Provides the color of bar in Bar Chart
  *
  * @param uv - number
+ *
  * @returns Color of bar depending on UV index
  */
 export const getUVColor = (uv) => {

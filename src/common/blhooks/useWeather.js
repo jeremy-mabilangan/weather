@@ -2,7 +2,7 @@ import { useMutation } from "react-query";
 import { getWeatherForecast } from "../api/weather";
 
 /**
- * Custom hook for get weather forecast
+ * Custom hooks of get weather forecast
  */
 export const useGetWeatherForecast = ({ onSuccess, onError }) => {
   const res = useMutation({

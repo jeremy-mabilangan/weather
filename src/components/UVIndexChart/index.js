@@ -4,9 +4,19 @@ import { CategoryScale } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
 Chart.register(CategoryScale);
-Chart.register(ChartDataLabels);
+Chart.register(ChartDataLabels); // Plugin label.
 
-function UVIndex({ chartData }) {
+/**
+ * A bar chart component which displays the UV index.
+ *
+ * @param chartData - Consists of labels and datasets to populate chart.
+ *
+ * @returns Bar chart component.
+ */
+const UVIndex = ({ chartData }) => {
+  /**
+   * Configuration of Line Chart JS.
+   */
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -15,6 +25,7 @@ function UVIndex({ chartData }) {
         color: "white",
         font: {
           size: 16,
+          weight: "bold",
         },
       },
       title: {
@@ -58,6 +69,6 @@ function UVIndex({ chartData }) {
       <Bar data={chartData} options={options} />
     </div>
   );
-}
+};
 
 export default UVIndex;

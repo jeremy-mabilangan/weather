@@ -6,6 +6,9 @@ export const weatherSlice = createSlice({
     data: undefined,
   },
   reducers: {
+    /**
+     * Set the data from Weather API
+     */
     setWeatherForecastData: (state, action) => ({
       ...state,
       data: action.payload,
