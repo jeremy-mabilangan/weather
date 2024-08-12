@@ -5,19 +5,19 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import SunSVG from "../../../src/common/assets/colored-sun.js";
 
 Chart.register(CategoryScale);
-Chart.register(ChartDataLabels);
+Chart.register(ChartDataLabels); // Plugin label
 
-function RainChanceChart({ chartData }) {
-  // const rainDropSVG = ({
-  //   h,
-  //   w,
-  //   c,
-  // }) => `<svg height="${h}" width="${w}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#000000">
-  // <g id="SVGRepo_bgCarrier" stroke-width="0"/>
-  // <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
-  // <g id="SVGRepo_iconCarrier"> <path style="fill:${c};" d="M256,512c-29.229,0-57.067-5.947-82.373-16.699C68.517,450.643,32.298,319.574,97.79,226.014L256,0 l158.21,226.014c65.491,93.56,29.274,224.629-75.837,269.286C313.067,506.053,285.229,512,256,512z"/> <path style="fill:${c};" d="M414.21,226.014L256,0v512c29.229,0,57.067-5.947,82.373-16.699 C443.483,450.643,479.702,319.574,414.21,226.014z"/> </g>
-  // </svg>`;
-
+/**
+ * A bar chart component which shows the chance of rain.
+ *
+ * @param chartData - Consists of labels and datasets to populate chart.
+ *
+ * @returns Bar chart component.
+ */
+const RainChanceChart = ({ chartData }) => {
+  /**
+   * Configuration of Bar Chart JS.
+   */
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -29,7 +29,8 @@ function RainChanceChart({ chartData }) {
         },
         color: "black",
         font: {
-          size: 12,
+          size: 13,
+          weight: "bold",
         },
         anchor: "end",
         align: "top",
@@ -71,7 +72,7 @@ function RainChanceChart({ chartData }) {
 
   const plugins = [
     {
-      id: "rain-drop",
+      // Displaying of sun icon if 0% rain chance.
       afterDraw: (chart) => {
         const { ctx } = chart;
         ctx.save();
@@ -92,54 +93,8 @@ function RainChanceChart({ chartData }) {
 
             // Positioning of colored sun svg in chart
             const pointX = point.x - 12.5;
-            const pointY = point.y - 25;
-            ctx.drawImage(img, pointX, pointY);
+            ctx.drawImage(img, pointX, 25);
             ctx.restore();
-
-            // Rain drop
-            //   const rc1 = dataPoint <= 50;
-            //   const rc2 = dataPoint >= 51 && dataPoint <= 75;
-
-            //   // Resizing and coloring of raindrop svg
-            //   if (dataPoint > 0) {
-            //     const getRainDropSVG = () => {
-            //       return rc1
-            //         ? rainDropSVG({
-            //             // Small
-            //             h: "10px",
-            //             w: "10px",
-            //             c: "#9ae0fe",
-            //           })
-            //         : rc2
-            //           ? rainDropSVG({
-            //               // Medium
-            //               h: "15px",
-            //               w: "15px",
-            //               c: "#7AB9E8",
-            //             })
-            //           : rainDropSVG({
-            //               // Large
-            //               h: "20px",
-            //               w: "20px",
-            //               c: "#02b2fd",
-            //             });
-            //     };
-
-            //     const point = chart.getDatasetMeta(datasetIndex).data[i];
-            //     const rainDropIconBase64 = btoa(getRainDropSVG());
-            //     const img = new Image();
-            //     img.src = `data:image/svg+xml;base64,${rainDropIconBase64}`;
-
-            //     // Positioning of raindrop svg in chart
-            //     const pointX = rc1
-            //       ? point.x - 5
-            //       : rc2
-            //         ? point.x - 8
-            //         : point.x - 10;
-            //     const pointY = point.y - 8;
-            //     ctx.drawImage(img, pointX, pointY);
-            //     ctx.restore();
-            //   }
           });
         });
       },
@@ -152,6 +107,6 @@ function RainChanceChart({ chartData }) {
       <Bar data={chartData} options={options} plugins={plugins} />
     </div>
   );
-}
+};
 
 export default RainChanceChart;

@@ -4,19 +4,30 @@ import { useGetWeatherForecast } from "../../common/blhooks/useWeather";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setWeatherForecastData } from "../../common/reducers/weather";
+import _ from "lodash";
 
 const ViewModel = () => {
+  /**
+   * Weather Redux
+   */
   const weatherState = useSelector((state) => state.weather);
   const dispatch = useDispatch();
   const locationInputRef = useRef();
+
+  /**
+   * Hooks for showing error message.
+   */
   const [showErrorMessage, setShowErrorMessage] = useState({
     show: false,
     message: "",
   });
 
-  const MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+  /**
+   * Google Maps API Key
+   */
+  const MAPS_API_KEY = process.env.REACT_APP_G_API_KEY;
 
-  /** ----------- Get weather forecast mutation ----------- */
+  /** ----------- START: Get weather forecast mutation ----------- */
   const { mutate: getWeatherForecastMutate, isLoading } = useGetWeatherForecast(
     {
       onSuccess: (data) => {
@@ -39,15 +50,24 @@ const ViewModel = () => {
       },
     }
   );
+  /** ----------- END: Get weather forecast mutation ----------- */
+
+  const handleSubmit2 = _?.debounce((e) => {
+    e.preventDefault();
+    console.log("Value: ", e.target.value);
+  }, 500);
 
   /**
    * Submit location to weather API
    */
   const handleSubmit = (e) => {
+    e.preventDefault();
+
     locationInputRef.current.blur();
     const value = locationInputRef.current?.value;
 
     if (value === "") {
+      // Display error message
       setShowErrorMessage({
         show: true,
         message: "Please enter your location",
@@ -57,15 +77,19 @@ const ViewModel = () => {
       value &&
       !isLoading
     ) {
+      // API Call
       getWeatherForecastMutate({
         q: value,
         days: 3,
       });
     }
-
-    e.preventDefault();
   };
 
+  /**
+   * Formatting of raw data.
+   *
+   * @returns Formatted data of Current Weather, Forecast, Charts, and Google Maps component.
+   */
   const reformatForecastData = () => {
     const locationData = weatherState?.data?.location;
     const currentData = weatherState?.data?.current;
@@ -75,7 +99,10 @@ const ViewModel = () => {
       lng: locationData.lon,
     };
 
+    // Location from API
     const name = `${locationData.name},${locationData.name === locationData.region ? "" : " " + locationData.region + ","} ${locationData.country}`;
+
+    // Current weather section
     const currentWeather = {
       day: moment(locationData.localtime).format("dddd, D MMM h:mm A"),
       condition: {
@@ -89,6 +116,7 @@ const ViewModel = () => {
       humidity: currentData.humidity,
     };
 
+    // Forecast section
     const forecast = forecastData.forecastday.reduce((acc, item) => {
       acc.push({
         label: item.day.condition.text,
@@ -116,7 +144,6 @@ const ViewModel = () => {
       }
     }, []);
 
-    // [50, 20, 5, 76, 78, 60, 100, 100, 88, 12, 50, 20];
     const rcData = forecastData.forecastday[0].hour.reduce((acc, item) => {
       const isEven = moment(item.time).format("h")
         ? Number(moment(item.time).format("h")) % 2
@@ -131,6 +158,9 @@ const ViewModel = () => {
       }
     }, []);
 
+    /**
+     * Rain chance chart data.
+     */
     const rainChart = {
       labels: hourLabels,
       datasets: [
@@ -155,6 +185,9 @@ const ViewModel = () => {
       ],
     };
 
+    /**
+     * Temperature chart data.
+     */
     const temperatureChart = {
       labels: hourLabels,
       datasets: [
@@ -206,7 +239,6 @@ const ViewModel = () => {
             });
           },
           fill: true,
-          // pointBackgroundColor: "current",
         },
       ],
     };
@@ -225,6 +257,9 @@ const ViewModel = () => {
       }
     }, []);
 
+    /**
+     * UV index chart data.
+     */
     const uvIndexChart = {
       labels: hourLabels,
       datasets: [
@@ -247,6 +282,7 @@ const ViewModel = () => {
   };
 
   useEffect(() => {
+    // Retaining of inputted location when mounted
     if (weatherState?.data && locationInputRef.current) {
       locationInputRef.current.value = weatherState?.data.searchedLocation;
     }
@@ -261,6 +297,7 @@ const ViewModel = () => {
     showErrorMessage,
     MAPS_API_KEY,
     isLoading,
+    handleSubmit2,
   };
 };
 

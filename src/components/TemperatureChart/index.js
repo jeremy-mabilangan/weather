@@ -4,9 +4,19 @@ import { CategoryScale } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
 Chart.register(CategoryScale);
-Chart.register(ChartDataLabels);
+Chart.register(ChartDataLabels); // Plugin label
 
-function TemperatureChart({ chartData }) {
+/**
+ * A line chart component which displays the temperatures.
+ *
+ * @param chartData - Consists of labels and datasets to populate chart.
+ *
+ * @returns Line chart component.
+ */
+const TemperatureChart = ({ chartData }) => {
+  /**
+   * Configuration of Line Chart JS.
+   */
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -17,10 +27,13 @@ function TemperatureChart({ chartData }) {
         },
         color: "black",
         font: {
-          size: 12,
+          size: 13,
+          weight: "bold",
         },
         padding: 6,
-        align: "end",
+        align: (ctx) => {
+          return ctx.dataIndex % 2 ? "start" : "end";
+        },
       },
       title: {
         display: false,
@@ -67,6 +80,6 @@ function TemperatureChart({ chartData }) {
       <Line data={chartData} options={options} />
     </div>
   );
-}
+};
 
 export default TemperatureChart;

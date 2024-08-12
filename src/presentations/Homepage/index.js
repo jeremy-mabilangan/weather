@@ -11,7 +11,7 @@ import { ReactComponent as SunSVG } from "../../../src/common/assets/sun.svg";
 import { ReactComponent as WindSVG } from "../../../src/common/assets/wind.svg";
 import { ReactComponent as HumiditySVG } from "../../../src/common/assets/humidity.svg";
 import { ReactComponent as SearchSVG } from "../../../src/common/assets/search.svg";
-import { ReactComponent as Loader } from "../../../src/common/assets/loader.svg";
+import { ReactComponent as LoaderSVG } from "../../../src/common/assets/loader.svg";
 import { ReactComponent as WeatherLogo } from "../../../src/common/assets/weather-logo.svg";
 
 function App() {
@@ -22,13 +22,14 @@ function App() {
     showErrorMessage,
     MAPS_API_KEY,
     isLoading,
+    handleSubmit2,
   } = ViewModel();
 
   return (
     <div className="min-h-screen bg-[#f2f2f2]">
       <section className="px-[15px] md:px-[30px] lg:px-[60px] xl:px-[20%] py-5">
         <section className="mb-3">
-          <div>
+          <>
             {!data && (
               <div className="flex justify-center mt-5 mb-5">
                 <WeatherLogo />
@@ -37,12 +38,13 @@ function App() {
             <div className="relative">
               <form onSubmit={handleSubmit}>
                 <input
-                  className="border-2 border-gray-300 bg-white h-14 px-5 pr-16 rounded-lg text-sm focus:outline-none w-full"
+                  className="bg-white h-[60px] px-5 pr-16 rounded-lg text-sm focus:outline-none w-full"
                   type="search"
                   name="search"
                   placeholder="Search your location"
                   autoComplete="off"
                   ref={locationInputRef}
+                  onChange={handleSubmit2}
                 ></input>
                 {showErrorMessage.show && (
                   <div
@@ -60,7 +62,7 @@ function App() {
                 className="absolute right-0 top-0 mt-4 mr-4"
                 onClick={handleSubmit}
               >
-                {isLoading ? <Loader /> : <SearchSVG />}
+                {isLoading ? <LoaderSVG /> : <SearchSVG />}
               </button>
               {!data && (
                 <div className="text-gray-700 mt-3 ml-3 text-sm">
@@ -73,18 +75,18 @@ function App() {
                 </div>
               )}
             </div>
-          </div>
+          </>
 
-          <div>
+          <>
             <p className="h-full text-lg pl-4 mt-3">{data?.name || ""}</p>
-          </div>
+          </>
         </section>
         {data ? (
           <>
             <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* grid grid-cols-2 xs:max-md:grid-cols-3 md:max-xl:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-3 gap-y-6 */}
               <section
-                className="shadow-xl rounded-xl p-5 bg-white animate-slideInFromLeft opacity-0"
+                className="rounded-xl p-5 bg-white animate-slideInFromLeft opacity-0"
                 style={{ "--delay": "0.25s" }}
               >
                 <section className="text-base xl:text-lg">
@@ -134,7 +136,7 @@ function App() {
                 </section>
               </section>
               <section
-                className="shadow-xl rounded-xl p-5 bg-white animate-slideInFromRight opacity-0"
+                className="rounded-xl p-5 bg-white animate-slideInFromRight opacity-0"
                 style={{ "--delay": "0.25s" }}
               >
                 <p className="font-bold text-2xl">Forecast</p>
@@ -171,7 +173,7 @@ function App() {
               </section>
             </section>
             <section
-              className="shadow-xl rounded-xl mt-5 p-[20px_20px_40px_20px] bg-white animate-slideInFromBottom opacity-0"
+              className="rounded-xl mt-5 p-[20px_20px_40px_20px] bg-white animate-slideInFromBottom opacity-0"
               style={{ "--delay": "0.5s" }}
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
