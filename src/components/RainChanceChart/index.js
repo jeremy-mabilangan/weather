@@ -1,3 +1,4 @@
+import React from "react";
 import { Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
@@ -14,7 +15,7 @@ Chart.register(ChartDataLabels); // Plugin label
  *
  * @returns Bar chart component.
  */
-const RainChanceChart = ({ chartData }) => {
+const RainChanceChart = React.memo(({ chartData }) => {
   /**
    * Configuration of Bar Chart JS.
    */
@@ -66,6 +67,7 @@ const RainChanceChart = ({ chartData }) => {
           display: false,
         },
         grace: 5,
+        max: 115,
       },
     },
   };
@@ -93,7 +95,7 @@ const RainChanceChart = ({ chartData }) => {
 
             // Positioning of colored sun svg in chart
             const pointX = point.x - 12.5;
-            ctx.drawImage(img, pointX, 25);
+            ctx.drawImage(img, pointX, 0);
             ctx.restore();
           });
         });
@@ -107,6 +109,6 @@ const RainChanceChart = ({ chartData }) => {
       <Bar data={chartData} options={options} plugins={plugins} />
     </div>
   );
-};
+});
 
 export default RainChanceChart;

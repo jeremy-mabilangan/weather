@@ -1,3 +1,4 @@
+import React from "react";
 import { Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
@@ -13,7 +14,7 @@ Chart.register(ChartDataLabels); // Plugin label.
  *
  * @returns Bar chart component.
  */
-const UVIndex = ({ chartData }) => {
+const UVIndex = React.memo(({ chartData }) => {
   /**
    * Configuration of Line Chart JS.
    */
@@ -69,6 +70,6 @@ const UVIndex = ({ chartData }) => {
       <Bar data={chartData} options={options} />
     </div>
   );
-};
+});
 
 export default UVIndex;
