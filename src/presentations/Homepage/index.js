@@ -22,7 +22,6 @@ function App() {
     showErrorMessage,
     MAPS_API_KEY,
     isLoading,
-    handleSubmit2,
   } = ViewModel();
 
   return (
@@ -44,7 +43,6 @@ function App() {
                   placeholder="Search your location"
                   autoComplete="off"
                   ref={locationInputRef}
-                  onChange={handleSubmit2}
                 ></input>
                 {showErrorMessage.show && (
                   <div

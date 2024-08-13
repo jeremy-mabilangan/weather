@@ -4,7 +4,6 @@ import { useGetWeatherForecast } from "../../common/blhooks/useWeather";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setWeatherForecastData } from "../../common/reducers/weather";
-import _ from "lodash";
 
 const ViewModel = () => {
   /**
@@ -21,6 +20,11 @@ const ViewModel = () => {
     show: false,
     message: "",
   });
+
+  /**
+   * Hooks for formatted data.
+   */
+  const [data, setData] = useState(undefined);
 
   /**
    * Google Maps API Key
@@ -51,11 +55,6 @@ const ViewModel = () => {
     }
   );
   /** ----------- END: Get weather forecast mutation ----------- */
-
-  const handleSubmit2 = _?.debounce((e) => {
-    e.preventDefault();
-    console.log("Value: ", e.target.value);
-  }, 500);
 
   /**
    * Submit location to weather API
@@ -282,7 +281,7 @@ const ViewModel = () => {
   };
 
   useEffect(() => {
-    // Retaining of inputted location when mounted
+    // Retaining of inputted location when mounted.
     if (weatherState?.data && locationInputRef.current) {
       locationInputRef.current.value = weatherState?.data.searchedLocation;
     }
@@ -290,14 +289,23 @@ const ViewModel = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    // Set the formatted data to Hooks.
+    if (weatherState?.data) {
+      const data = reformatForecastData();
+      setData(data);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(weatherState?.data)]);
+
   return {
-    data: weatherState?.data ? reformatForecastData() : undefined,
+    data,
     locationInputRef,
     handleSubmit,
     showErrorMessage,
     MAPS_API_KEY,
     isLoading,
-    handleSubmit2,
   };
 };
 

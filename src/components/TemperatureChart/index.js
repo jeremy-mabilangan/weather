@@ -1,3 +1,4 @@
+import React from "react";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
@@ -13,7 +14,7 @@ Chart.register(ChartDataLabels); // Plugin label
  *
  * @returns Line chart component.
  */
-const TemperatureChart = ({ chartData }) => {
+const TemperatureChart = React.memo(({ chartData }) => {
   /**
    * Configuration of Line Chart JS.
    */
@@ -80,6 +81,6 @@ const TemperatureChart = ({ chartData }) => {
       <Line data={chartData} options={options} />
     </div>
   );
-};
+});
 
 export default TemperatureChart;
