@@ -14,7 +14,7 @@ import { ReactComponent as SearchSVG } from "../../../src/common/assets/search.s
 import { ReactComponent as LoaderSVG } from "../../../src/common/assets/loader.svg";
 import { ReactComponent as WeatherLogo } from "../../../src/common/assets/weather-logo.svg";
 
-function App() {
+const Homepage = () => {
   const {
     locationInputRef,
     handleSubmit,
@@ -74,7 +74,6 @@ function App() {
               )}
             </div>
           </>
-
           <>
             <p className="h-full text-lg pl-4 mt-3">{data?.name || ""}</p>
           </>
@@ -90,7 +89,7 @@ function App() {
                 <section className="text-base xl:text-lg">
                   <p className="font-bold text-2xl">Current Weather</p>
                   <p className="text-sm">{data?.currentWeather.day}</p>
-                  <div className="grid grid-cols-2 mt-5 gap-5">
+                  <div className="grid grid-cols-[40%_60%] mt-5 gap-5">
                     <div className="content-center">
                       <div className="flex justify-end">
                         <img
@@ -106,10 +105,12 @@ function App() {
                     </div>
                     <div className="pt-2">
                       <div className="flex justify-start">
-                        <p className="text-7xl font-light">
+                        <p className="text-7xl font-bold">
                           {data?.currentWeather.degree}
                         </p>
-                        <p className="font-sans pt-1 font-bold">&#8451;</p>
+                        <p className="font-sans pt-1 font-bold text-lg">
+                          &#8451;
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -176,21 +177,11 @@ function App() {
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="h-[300px] select-none">
-                  {data.location && (
-                    <Maps
-                      apiKey={MAPS_API_KEY}
-                      map={{
-                        center: data.location,
-                        defaultZoom: 11,
-                        gestureHandling: "greedy",
-                        disableDefaultUI: true,
-                        zoomControl: true,
-                        scaleControl: true,
-                        draggable: false,
-                      }}
-                      marker={{ position: data.location }}
-                    />
-                  )}
+                  <Maps
+                    apiKey={MAPS_API_KEY}
+                    map={data?.mapsProps}
+                    marker={data?.markerProps}
+                  />
                 </div>
                 <div className="select-none pb-10 md:pb-0">
                   <RainChanceChart chartData={data?.rainChart} />
@@ -213,6 +204,6 @@ function App() {
       </section>
     </div>
   );
-}
+};
 
-export default App;
+export default Homepage;

@@ -1,3 +1,4 @@
+import React from "react";
 import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 
 /**
@@ -9,7 +10,7 @@ import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
  *
  * @returns Google map component with marked location.
  */
-const Maps = ({ apiKey, map, marker }) => {
+const Maps = React.memo(({ apiKey, map, marker }) => {
   return (
     <APIProvider apiKey={apiKey}>
       <Map {...map}>
@@ -17,6 +18,6 @@ const Maps = ({ apiKey, map, marker }) => {
       </Map>
     </APIProvider>
   );
-};
+});
 
 export default Maps;

@@ -27,6 +27,7 @@ const UVIndex = React.memo(({ chartData }) => {
         font: {
           size: 16,
           weight: "bold",
+          family: `"Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif`,
         },
       },
       title: {
@@ -47,6 +48,11 @@ const UVIndex = React.memo(({ chartData }) => {
         },
         border: {
           display: false,
+        },
+        ticks: {
+          font: {
+            family: `"Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif`,
+          },
         },
       },
       y: {

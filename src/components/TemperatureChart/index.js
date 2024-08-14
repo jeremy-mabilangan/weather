@@ -30,6 +30,7 @@ const TemperatureChart = React.memo(({ chartData }) => {
         font: {
           size: 13,
           weight: "bold",
+          family: `"Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif`,
         },
         padding: 6,
         align: (ctx) => {
@@ -54,6 +55,11 @@ const TemperatureChart = React.memo(({ chartData }) => {
         },
         border: {
           display: false,
+        },
+        ticks: {
+          font: {
+            family: `"Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif`,
+          },
         },
       },
       y: {

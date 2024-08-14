@@ -2,8 +2,8 @@ import instance from "../app/axios";
 
 /**
  * @param params {
- *      q: location;
- *      days: forecast days;
+ *     q {string}: location;
+ *     days {number}: forecast days;
  * }
  *
  * @returns The Forecast data of inputted location.
