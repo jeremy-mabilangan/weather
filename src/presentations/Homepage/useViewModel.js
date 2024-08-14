@@ -94,8 +94,8 @@ const ViewModel = () => {
     const currentData = weatherState?.data?.current;
     const forecastData = weatherState?.data?.forecast;
     const location = {
-      lat: locationData.lat,
-      lng: locationData.lon,
+      lat: locationData?.lat,
+      lng: locationData?.lon,
     };
 
     // Location from API
@@ -269,6 +269,26 @@ const ViewModel = () => {
       ],
     };
 
+    /**
+     * Google Maps
+     */
+    const mapsProps = {
+      center: location,
+      defaultZoom: 11,
+      gestureHandling: "greedy",
+      disableDefaultUI: true,
+      zoomControl: true,
+      scaleControl: true,
+      draggable: false,
+    };
+
+    /**
+     * Google Maps Marker
+     */
+    const markerProps = {
+      position: location,
+    };
+
     return {
       name,
       currentWeather,
@@ -276,7 +296,8 @@ const ViewModel = () => {
       rainChart,
       temperatureChart,
       uvIndexChart,
-      location,
+      mapsProps,
+      markerProps,
     };
   };
 

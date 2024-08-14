@@ -32,6 +32,7 @@ const RainChanceChart = React.memo(({ chartData }) => {
         font: {
           size: 13,
           weight: "bold",
+          family: `"Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif`,
         },
         anchor: "end",
         align: "top",
@@ -54,6 +55,11 @@ const RainChanceChart = React.memo(({ chartData }) => {
         },
         border: {
           display: false,
+        },
+        ticks: {
+          font: {
+            family: `"Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif`,
+          },
         },
       },
       y: {
